@@ -811,18 +811,11 @@ bool eDVBResourceManager::frontendIsMultistream(int index)
 
 std::string eDVBResourceManager::getFrontendCapabilities(int index)
 {
-	fe_delivery_system_t delsys;
 	for (eSmartPtrList<eDVBRegisteredFrontend>::iterator i(m_frontend.begin()); i != m_frontend.end(); ++i)
 	{
 		if (i->m_frontend->getSlotID() == index)
 		{
-			switch (i->m_frontend->getCurrentType())
-			{
-				case iDVBFrontend::feSatellite:
-					delsys = SYS_DVBS;
-					break;
-				default:
-return i->m_frontend->getCapabilities();
+			return i->m_frontend->getCapabilities();
 		}
 	}
 	return "";
