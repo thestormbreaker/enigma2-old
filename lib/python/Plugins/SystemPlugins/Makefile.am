@@ -7,6 +7,10 @@ SUBDIRS = SoftwareManager PositionerSetup Satfinder \
 	VideoEnhancement WirelessLan NetworkWizard \
 	SABnzbdSetup FastScan SatelliteEquipmentControl DiseqcTester
 
+if DREAMBOX
+SUBDIRS += FrontprocessorUpgrade NFIFlash
+endif
+
 if VUSOLO2
 SUBDIRS += CableScan
 endif
