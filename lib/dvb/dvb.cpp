@@ -821,16 +821,6 @@ std::string eDVBResourceManager::getFrontendCapabilities(int index)
 				case iDVBFrontend::feSatellite:
 					delsys = SYS_DVBS;
 					break;
-				case iDVBFrontend::feCable:
-#if defined SYS_DVBC_ANNEX_A
-					delsys = SYS_DVBC_ANNEX_A;
-#else
-					delsys = SYS_DVBC_ANNEX_AC;
-#endif
-					break;
-				case iDVBFrontend::feTerrestrial:
-					delsys = SYS_DVBT;
-					break;
 				default:
 return i->m_frontend->getCapabilities();
 		}
