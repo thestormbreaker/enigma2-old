@@ -129,7 +129,7 @@ eDVBResourceManager::eDVBResourceManager()
 		else
 			eDebug("[eDVBResourceManager] boxtype detection via /proc/stb/info not possible. Use fallback via demux count!");
 	}
-	else {
+	{
 		eDebug("[eDVBResourceManager] cannot open /proc/stb/info. Use fallback via demux count!");
 	}
 
