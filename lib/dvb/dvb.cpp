@@ -108,15 +108,18 @@ eDVBResourceManager::eDVBResourceManager()
 		addAdapter(adapter, true);
 	}
 
+	m_boxtype = -1;
 	int fd = open("/proc/stb/info/model", O_RDONLY);
-	char tmp[16];
-	int rd = fd >= 0 ? read(fd, tmp, sizeof(tmp)) : 0;
-	if (fd >= 0)
+	if (fd >= 0) {
+		char tmp[16];
+		int rd = read(fd, tmp, sizeof(tmp));
 		close(fd);
 
-	        if (!strncmp(tmp, "dm7025\n", rd))
-		        m_boxtype = DM7025;
-	        else if (!strncmp(tmp, "dm8000\n", rd))
+		if (rd == 0)
+			eDebug("[eDVBResourceManager] /proc/stb/info empty. Use fallback via demux count!");
+		else if (!strncmp(tmp, "dm7025\n", rd))
+			m_boxtype = DM7025;
+		else if (!strncmp(tmp, "dm8000\n", rd))
 			m_boxtype = DM8000;
 		else if (!strncmp(tmp, "dm800\n", rd))
 			m_boxtype = DM800;
