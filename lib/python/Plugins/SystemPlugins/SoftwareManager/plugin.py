@@ -37,6 +37,34 @@ from Tools.NumericalTextInput import NumericalTextInput
 from ImageWizard import ImageWizard
 from BackupRestore import BackupSelection, RestoreMenu, BackupScreen, RestoreScreen, getBackupPath, getBackupFilename
 from SoftwareTools import iSoftwareTools
+from boxbranding import getBoxType, getMachineBrand, getMachineName, getBrandOEM, getImageDistro
+
+boxtype = getBoxType()
+brandoem = getBrandOEM()
+
+def eEnv_resolve_multi(path):
+	resolve = eEnv.resolve(path)
+	return resolve.split()
+
+if config.softwareupdate.disableupdates.value:
+	if os.path.exists("/var/lib/opkg/status"):
+		os.system("mkdir /var/lib/.opkg")
+		os.system("mkdir /etc/.opkg")
+		os.system("mv /var/lib/opkg/* /var/lib/.opkg/")
+		os.system("mv /etc/opkg/* /etc/.opkg/")
+
+if not config.softwareupdate.disableupdates.value:
+	if os.path.exists("/var/lib/.opkg/status"):
+		os.system("mv /var/lib/.opkg/* /var/lib/opkg/")
+		os.system("mv /etc/.opkg/* /etc/opkg/")
+		os.system("rmdir /var/lib/.opkg")
+		os.system("rmdir /etc/.opkg")
+
+if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/dFlash"):
+	from Plugins.Extensions.dFlash.plugin import dFlash
+	DFLASH = True
+else:
+	DFLASH = False
 
 
 config.plugins.configurationbackup = ConfigSubsection()

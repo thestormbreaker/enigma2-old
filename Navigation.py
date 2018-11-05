@@ -5,15 +5,19 @@ from enigma import eServiceCenter, eServiceReference, eTimer, pNavigation, getBe
 
 from Components.ParentalControl import parentalControl
 from Components.config import config
+from Components.PluginComponent import plugins
+from Plugins.Plugin import PluginDescriptor
 from Components.SystemInfo import SystemInfo
 from Tools.BoundFunction import boundFunction
 from Tools.StbHardware import getFPWasTimerWakeup
+from time import time, ctime
 import RecordTimer
 import PowerTimer
 import Screens.Standby
 import NavigationInstance
 import ServiceReference
 from Screens.InfoBar import InfoBar, MoviePlayer
+from boxbranding import getBoxType, getBrandOEM, getMachineBuild
 from Components.Sources.StreamService import StreamServiceList
 
 # TODO: remove pNavgation, eNavigation and rewrite this stuff in python.

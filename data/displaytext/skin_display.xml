@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--  Skin: LCD from Magic by MiLo, XmlUnboundNsPrefix -->
 <!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
-<!-- This skin is at github.com/OpenViX/enigma2/tree/master/data/displaytext -->
 <skin>
 	<windowstyle id="1" type="skinned">
 		<color color="#000000" name="Background"/>
@@ -21,9 +20,6 @@
 		<!-- pick a funky name for the font, so we don't conflict  -->
 		<font filename="nmsbd.ttf" name="FdLcD" scale="100"/>
 	</fonts>
-	<parameters>
-		<parameter name="AllowUserDatesAndTimesDisplay" value="1,1" />
-	</parameters>
 
 <!-- main-->
 	<screen name="InfoBarSummary" position="0,0" size="132,64">
@@ -33,6 +29,18 @@
 		<widget source="session.RecordState" render="FixedLabel" text=" " position="0,30" zPosition="1" size="120,34">
 			<convert type="ConfigEntryTest">config.usage.blinking_display_clock_during_recording,True,CheckSourceBoolean</convert>
 			<convert type="ConditionalShowHide">Blink</convert>
+		</widget>
+		<widget source="session.RecordState" render="FixedLabel" text=" " position="0,30" zPosition="1" size="120,34">
+			<convert type="ConfigEntryTest">config.usage.blinking_display_clock_during_recording,False,CheckSourceBoolean</convert>
+			<convert type="ConditionalShowHide" />
+		</widget>
+		<widget source="session.RecordState" render="FixedLabel" position="0,0" size="120,25" text="  REC  ">
+			<convert type="ConfigEntryTest">config.usage.blinking_rec_symbol_during_recording,RecBlink,CheckSourceBoolean</convert>
+			<convert type="ConditionalShowHide">Blink</convert>
+		</widget>
+		<widget source="session.RecordState" render="FixedLabel" position="0,0" size="120,25" text="  REC  ">
+			<convert type="ConfigEntryTest">config.usage.blinking_rec_symbol_during_recording,Rec,CheckSourceBoolean</convert>
+			<convert type="ConditionalShowHide" />
 		</widget>
 	</screen>
 
@@ -48,7 +56,7 @@
 
 <!-- menus-->
 	<screen name="MenuSummary" position="0,0" size="16,1">
-		<widget source="parent.menu" render="Label" position="0,0" size="132,1" font="Regular;16" halign="left" valign="top">
+		<widget source="parent.menu" render="RollerCharLCD" position="0,0" size="132,1" font="Regular;16" halign="left" valign="top">
 			<convert type="StringListSelection" />
 		</widget>
 	</screen>
@@ -79,7 +87,7 @@
 
 <!-- setup-->
 	<screen name="SetupSummary" position="0,0" size="132,64">
-		<widget source="SetupTitle" render="Label" position="0,0" size="120,16" font="Regular;12" />
+		<widget source="SetupTitle" render="RollerCharLCD" position="0,0" size="120,16" font="Regular;12" />
 <!--
 		<widget source="SetupEntry" render="Label" position="0,0" size="120,32" font="Regular;12" />
  -->
@@ -88,10 +96,7 @@
 
 <!-- misc-->
 	<screen name="SimpleSummary" position="0,0" size="132,64">
-		<widget source="parent.Title" render="Label" position="0,0" size="124,40" font="Regular;16" valign="center" />
-	</screen>
-	<screen name="VIXMenuSummary" position="0,0" size="132,64">
-		<widget source="entry" render="Label" position="0,0" size="120,20" font="Regular;18" noWrap="1" />
+		<widget source="parent.Title" render="RollerCharLCD" position="0,0" size="124,40" font="Regular;16" valign="center" />
 	</screen>
 	<screen name="ChoiceBox_summary" position="0,0" size="132,64">
 		<widget source="parent.summary_selection" render="Label" position="0,0" size="126,64" font="Regular;11" noWrap="1" />
@@ -114,26 +119,32 @@
 	</screen>
 
 	<screen name="WizardSummary" position="fill">
-		<widget source="parent.list" render="Label" position="fill" font="Regular;12">
+		<widget source="parent.list" render="RollerCharLCD" position="fill" font="Regular;12">
 			<convert type="StringListSelection" />
 		</widget>
 	</screen>
 	<screen name="VideoWizardSummary" position="fill">
-		<panel name="WizardSummary" />
+		<widget source="parent.list" render="Label" position="fill" font="Regular;12">
+			<convert type="StringListSelection" />
+		</widget>
 	</screen>
 
 <!-- standby -->
 	<screen name="StandbySummary" position="0,0" size="132,64">
 		<widget source="global.CurrentTime" render="Label" position="0,0" size="120,64" font="Regular;48" halign="center" valign="center">
-			<convert type="ClockToText">VFD12</convert>
+			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
 		<widget source="session.RecordState" render="FixedLabel" position="0,4" zPosition="1" size="120,64" text=" ">
 			<convert type="ConfigEntryTest">config.usage.blinking_display_clock_during_recording,True,CheckSourceBoolean</convert>
 			<convert type="ConditionalShowHide">Blink</convert>
 		</widget>
+		<widget source="session.RecordState" render="FixedLabel" position="0,4" zPosition="1" size="120,64" text=" ">
+			<convert type="ConfigEntryTest">config.usage.blinking_display_clock_during_recording,False,CheckSourceBoolean</convert>
+			<convert type="ConditionalShowHide" />
+		</widget>
 	</screen>
 
-	<!-- RDS info -->
+<!-- RDS info -->
 	<screen name="RdsInfoDisplaySummary" position="0,0" size="132,64">
 		<widget source="message" render="Label" position="0,0" size="120,20" font="Regular;18" noWrap="1" />
 	</screen>
@@ -143,6 +154,62 @@
 		<widget source="entry" render="Label" position="0,0" size="120,20" font="Regular;18" noWrap="1" />
 	</screen>
 	
+<!-- EMC  -->
+	<screen name="EMCSelection_summary" position="0,0" size="132,64">
+		<widget source="parent.Service" render="RollerCharLCD" position="0,0" size="124,32" font="Regular;18" />
+	</screen>
+	<screen name="EMCMoviePlayerSummary" position="0,0" size="132,1">
+		<widget source="session.CurrentService" render="Label" position="0,0" size="132,1">
+			<convert type="ServicePosition">Remaining,Negate</convert>
+		</widget>
+	</screen>
+
+<!-- mediaplayer -->
+	<screen name="MediaPlayerLCDScreen" position="0,0" size="132,64">
+		<widget source="session.CurrentService" render="Label" position="0,0" size="120,25" halign="left" noWrap="1" >
+			<convert type="ServicePosition">VFDPosition</convert>
+		</widget>
+	</screen>
+
+<!-- ATV -->
+<!-- Quickmenü -->
+	<screen name="QuickMenu_summary" position="0,0" size="132,64">
+		<widget source="parent.summary_description" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
+<!-- Infopanel -->
+	<screen name="Infopanel_summary" position="0,0" size="132,64">
+		<widget source="parent.summary_description" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
+<!-- Powertimer -->
+	<screen name="TimerEntry_summary" position="0,0" size="132,64">
+		<widget source="parent.summary_description" render="Label" position="fill" size="120,20" font="Regular;18" />       
+	</screen>
+<!-- LanguageSelection -->
+	<screen name="LanguageSelection_summary" position="0,0" size="132,64">
+		<widget source="parent.summarylangsel" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
+	<screen name="LanguageWizardSummary" position="0,0" size="132,64">
+		<widget source="parent.summarylangsel" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
+<!-- AudioSelection -->
+	<screen name="AudioSelection_summary" position="0,0" size="132,64">
+		<widget source="parent.summary_description" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
+<!-- Console -->
+	<screen name="Console_summary" position="0,0" size="132,64">
+		<widget source="parent.Title" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
+<!-- Timer -->
+	<screen name="TimerLog_summary" position="0,0" size="132,64">
+		<widget source="parent.summary_description" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
+<!-- Wizard -->
+	<screen name="WizardSummary" position="0,0" size="132,64">
+		<widget source="entry" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
+	<screen name="VideoWizardSummary" position="0,0" size="132,64">
+		<widget source="entry" render="Label" position="fill" size="120,20" font="Regular;18" />
+	</screen>
 	<screen name="CrossEPG_MenuSummary" position="0,0" size="132,64">
 		<widget source="SetupEntry" render="Label" position="0,0" size="120,20" font="Regular;18" halign="left" noWrap="1"  />
 	</screen>

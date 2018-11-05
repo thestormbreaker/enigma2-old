@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
-<!-- This skin is at github.com/OpenViX/enigma2/tree/master/data/vfd128 -->
 <skin>
 	<windowstyle id="1" type="skinned">
 		<color color="#000000" name="Background"/>
@@ -38,52 +37,51 @@
 			<convert type="ConditionalShowHide" />
 		</widget>
 		<widget source="session.RecordState" render="Pixmap" pixmap="rec.png" position="40,0" size="19,10" >
+			<convert type="ConfigEntryTest">config.usage.blinking_rec_symbol_during_recording,True,CheckSourceBoolean</convert>
 			<convert type="ConditionalShowHide">Blink</convert>
 		</widget>
-		<widget source="global.OnlineStableUpdateState" render="Pixmap" pixmap="update.png" position="62,0" size="10,10" >
-			<convert type="ConditionalShowHide">Blink</convert>
-		</widget>
-		<widget source="global.OnlineUnstableUpdateState" render="Pixmap" pixmap="update.png" position="62,0" size="10,10" >
-			<convert type="ConditionalShowHide">Blink</convert>
+		<widget source="session.RecordState" render="Pixmap" pixmap="rec.png" position="40,0" size="19,10" >
+			<convert type="ConfigEntryTest">config.usage.blinking_rec_symbol_during_recording,False,CheckSourceBoolean</convert>
+			<convert type="ConditionalShowHide" />
 		</widget>
 	</screen>
 	<screen name="SummaryTunerStatusPanel">
-		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-a.png" position="65,19" size="9,14">
+		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-a.png" position="68,19" size="9,14">
 			<convert type="TunerInfo">TunerUseMask</convert>
 			<convert type="ValueBitTest">1</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-b.png" position="74,19" size="9,14">
+		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-b.png" position="77,19" size="9,14">
 			<convert type="TunerInfo">TunerUseMask</convert>
 			<convert type="ValueBitTest">2</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-c.png" position="83,19" size="9,14">
+		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-c.png" position="86,19" size="9,14">
 			<convert type="TunerInfo">TunerUseMask</convert>
 			<convert type="ValueBitTest">4</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-d.png" position="92,19" size="9,14">
+		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-d.png" position="95,19" size="9,14">
 			<convert type="TunerInfo">TunerUseMask</convert>
 			<convert type="ValueBitTest">8</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-a-act.png" position="65,19" size="9,14">
+		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-a-act.png" position="68,19" size="9,14">
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">0,0</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-b-act.png" position="74,19" size="9,14">
+		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-b-act.png" position="77,19" size="9,14">
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">1,1</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-c-act.png" position="83,19" size="9,14">
+		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-c-act.png" position="86,19" size="9,14">
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">2,2</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-d-act.png" position="92,19" size="9,14">
+		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-d-act.png" position="95,19" size="9,14">
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">3,3</convert>
 			<convert type="ConditionalShowHide" />
@@ -127,6 +125,20 @@
 	<screen name="InfoBarMoviePlayerSummary" position="0,0" size="128,32">
 		<widget name="statusicon_summary" position="0,13" size="11,10" pixmaps="play.png,pause.png,stop.png,forward.png,backward.png,slow.png" zPosition="3" />
 		<widget source="session.CurrentService" render="Label" position="12,10" size="129,20" font="FdLcD;16" halign="left" valign="top" zPosition="1" noWrap="1" >
+			<convert type="ServiceName">Name</convert>
+		</widget>
+		<widget source="session.CurrentService" render="Progress" position="0,26" size="50,6" borderWidth="1" zPosition="1" >
+			<convert type="ServicePosition">VFDPosition</convert>
+		</widget>
+		<widget source="session.CurrentService" render="Label" position="58,25" size="70,12" font="FdLcD;12" halign="right" valign="bottom" noWrap="1" zPosition="1" >
+			<convert type="ServicePosition">VFDPosition</convert>
+		</widget>
+		<panel name="SummaryIconsPanel" />
+		<panel name="SummaryClockPanel" />
+	</screen>
+	<screen name="EMCMoviePlayerSummary" position="0,0" size="128,32">
+		<widget name="statusicon_summary" position="0,13" size="11,10" pixmaps="play.png,pause.png,stop.png,forward.png,backward.png,slow.png" zPosition="3" />
+		<widget source="session.CurrentService" render="Label" position="12,10" size="129,20" font="FdLcD;16" halign="left" valign="top" zPosition="1" >
 			<convert type="ServiceName">Name</convert>
 		</widget>
 		<widget source="session.CurrentService" render="Progress" position="0,26" size="50,6" borderWidth="1" zPosition="1" >
@@ -199,50 +211,55 @@
 <!-- standby -->
 	<screen name="StandbySummary" position="0,0" size="128,32">
 		<widget source="global.CurrentTime" render="Label" position="0,0" size="128,22" font="FdLcD;18" halign="left" noWrap="1">
-			<convert type="ClockToText">ShortDate</convert>
+			<convert type="ClockToText">Format:%a  %e %b  %Y</convert>
 		</widget>
 		<widget source="global.CurrentTime" render="Label" position="0,15" size="120,22" font="FdLcD;22" halign="left" noWrap="1">
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
-		<widget source="session.RecordState" render="Pixmap" pixmap="rec.png"  position="105,22" size="19,10">
+		<widget source="session.RecordState" render="Pixmap" pixmap="rec.png"  position="121,22" size="19,10">
+			<convert type="ConfigEntryTest">config.usage.blinking_rec_symbol_during_recording,True,CheckSourceBoolean</convert>
 			<convert type="ConditionalShowHide">Blink</convert>
 		</widget>
-		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-a.png" position="65,19" size="9,14">
+		<widget source="session.RecordState" render="Pixmap" pixmap="rec.png"  position="121,22" size="19,10">
+			<convert type="ConfigEntryTest">config.usage.blinking_rec_symbol_during_recording,False,CheckSourceBoolean</convert>
+			<convert type="ConditionalShowHide" />
+		</widget>
+		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-a.png" position="68,19" size="9,14">
 			<convert type="TunerInfo">TunerUseMask</convert>
 			<convert type="ValueBitTest">1</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-b.png" position="74,19" size="9,14">
+		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-b.png" position="77,19" size="9,14">
 			<convert type="TunerInfo">TunerUseMask</convert>
 			<convert type="ValueBitTest">2</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-c.png" position="83,19" size="9,14">
+		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-c.png" position="86,19" size="9,14">
 			<convert type="TunerInfo">TunerUseMask</convert>
 			<convert type="ValueBitTest">4</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-d.png" position="92,19" size="9,14">
+		<widget source="session.TunerInfo" render="Pixmap" pixmap="tuner-d.png" position="95,19" size="9,14">
 			<convert type="TunerInfo">TunerUseMask</convert>
 			<convert type="ValueBitTest">8</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-a-act.png" position="65,19" size="9,15">
+		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-a-act.png" position="68,19" size="9,15">
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">0,0</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-b-act.png" position="74,19" size="9,15">
+		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-b-act.png" position="77,19" size="9,15">
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">1,1</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-c-act.png" position="83,19" size="9,15">
+		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-c-act.png" position="86,19" size="9,15">
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">2,2</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-d-act.png" position="92,19" size="9,15">
+		<widget source="session.FrontendInfo" render="Pixmap" pixmap="tuner-d-act.png" position="95,19" size="9,15">
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">3,3</convert>
 			<convert type="ConditionalShowHide" />
@@ -356,25 +373,7 @@
 		<panel name="SummaryIconsPanel" />
 		<panel name="SummaryClockPanel" />
 	</screen>
-<!-- ViX -->
-	<screen name="VIXDevicesPanelSummary" position="0,0" size="128,32">
-		<widget source="parent.Title" render="Label" position="0,0" size="160,16" font="FdLcD;16" halign="left" valign="top" noWrap="1" />
-		<widget source="entry" render="Label" position="0,16" size="128,16" font="FdLcD;14" halign="left" valign="bottom" noWrap="1" />
-		<!--<widget source="desc" render="Label" position="0,38" size="128,26" font="FdLcD;12" halign="left" transparent="1" />-->
-	</screen>
-	<screen name="VIXSwap_summary" position="0,0" size="128,32">
-		<widget source="parent.Title" render="Label" position="0,0" size="160,16" font="FdLcD;16" halign="left" noWrap="1" />
-		<widget source="parent.swapname_summary" render="Label" position="0,16" size="128,14" font="FdLcD;16" halign="left" noWrap="1" />
-		<!--<widget source="parent.swapactive_summary" render="Label" position="0,50" size="128,14" font="FdLcD;12" halign="left" transparent="1" />-->
-	</screen>
-	<screen name="UpdatePlugin_summary" position="0,0" size="128,32">
-		<widget source="parent.Title" render="Label" position="0,0" size="128,16" font="FdLcD;16" halign="center" valign="top" noWrap="1" />
-		<widget source="parent.package" render="Label" position="0,16" size="128,16" font="FdLcD;14" halign="center" valign="bottom" noWrap="1" />
-	</screen>
-	<screen name="SoftwareUpdateChanges_summary" position="fill">
-		<!--<widget source="parent.title_summary" render="Label" position="top" size="*,14" font="FdLcD;16" halign="left" valign="top" noWrap="1" />-->
-		<widget source="parent.text_summary" render="Label" position="fill" size="*,18" font="FdLcD;10" halign="left" valign="top" />
-	</screen>
+
 <!-- AutoTimerOverview -->
 	<screen name="AutoTimerOverviewSummary" position="0,0" size="128,32">
 		<widget source="parent.Title" render="Label" position="0,0" size="128,16" font="FdLcD;16" halign="left" valign="bottom" />
@@ -421,6 +420,52 @@
 		<widget source="parent.Title" render="Label" position="0,0" size="160,16" font="FdLcD;16" halign="left" noWrap="1" />
 		<widget source="parent.summary_action" render="Label" position="0,16" size="128,16" font="FdLcD;14" halign="left" noWrap="1" />
 		<!--<widget source="parent.summary_status" render="Label" position="0,41" size="128,18" font="FdLcD;16" halign="left" noWrap="1" />-->
+	</screen>
+<!-- ATV -->
+	<!-- Quickmenü -->
+	<screen name="QuickMenu_summary" position="0,0" size="128,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
+	</screen>
+	
+	<!-- Infopanel -->
+	<screen name="Infopanel_summary" position="0,0" size="128,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
+	</screen>
+
+	<!-- AudioSelection -->
+	<screen name="AudioSelection_summary" position="0,0" size="132,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
+	</screen>
+
+<!-- console -->
+	<screen name="Console_summary" position="0,0" size="132,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
+	</screen>
+
+<!-- softwaremanagment -->
+	<screen name="BackupSelection_summary" position="0,0" size="132,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
+	</screen>
+	<screen name="RestoreScreen_summary" position="0,0" size="132,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
+	</screen>
+	<screen name="installedPlugins_summary" position="0,0" size="132,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
+	</screen>
+	<screen name="RestartNetwork_summary" position="0,0" size="132,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
+	</screen>
+	<screen name="RestorePlugins_summary" position="0,0" size="132,32">
+		<widget source="parent.Title" render="Label" position="0,0" size="128,14" font="FdLcD;12" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.summary_description" render="Label" position="0,15" size="128,17" zPosition="1" font="FdLcD;16" halign="center" valign="center" noWrap="1" />
 	</screen>
 	<screen name="AutoBouquetsMaker_MenuSummary" position="0,0" size="128,32">
 		<widget source="SetupTitle" render="Label" position="0,0" size="160,16" font="FdLcD;16" halign="left" noWrap="1"  />

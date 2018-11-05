@@ -1,3 +1,4 @@
+from boxbranding import getBoxType, getBrandOEM
 from time import localtime, mktime
 from datetime import datetime
 import xml.etree.cElementTree
