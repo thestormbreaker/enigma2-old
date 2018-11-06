@@ -2122,7 +2122,19 @@ RESULT eDVBChannel::getDemux(ePtr<iDVBDemux> &demux, int cap)
 			return -1;
 
 		demux = *our_demux;
-	}
+
+		/* don't hold a reference to the decoding demux, we don't need it. */
+
+		/* FIXME: by dropping the 'allocated demux' in favour of the 'iDVBDemux',
+		   the refcount is lost. thus, decoding demuxes are never allocated.
+
+		   this poses a big problem for PiP. */
+
+		if (cap & capHoldDecodeReference) // this is set in eDVBResourceManager::allocateDemux for Dm500HD/DM800 and DM8000
+			;
+		else if (cap & capDecode)
+			our_demux = 0;
+ 	}
 	else
 		demux = *our_demux;
 
@@ -2166,6 +2178,7 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 	if (m_pvr_thread)
 	{
 		m_pvr_thread->stop();
+		delete m_pvr_thread;
 		m_pvr_thread = 0;
 	}
 
@@ -2176,11 +2189,23 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 	}
 
 	m_source = source;
-	m_tstools.setSource(m_source, streaminfo_file);
+ 	m_tstools.setSource(m_source, streaminfo_file);
+ 
+		/* DON'T EVEN THINK ABOUT FIXING THIS. FIX THE ATI SOURCES FIRST,
+		   THEN DO A REAL FIX HERE! */
 
-	if (m_pvr_fd_dst < 0)
-	{
-#if defined(__sh__) // our pvr device is called dvr
+ 	if (m_pvr_fd_dst < 0)
+ 	{
+		/* (this codepath needs to be improved anyway.) */
+#ifdef HAVE_OLDPVR
+		m_pvr_fd_dst = open("/dev/misc/pvr", O_WRONLY);
+		if (m_pvr_fd_dst < 0)
+		{
+			eDebug("can't open /dev/misc/pvr - %m"); // or wait for the driver to be improved.
+			return -ENODEV;
+		}
+#else
+ #if defined(__sh__) // our pvr device is called dvr
 		char dvrDev[128];
 		int dvrIndex = m_mgr->m_adapter.begin()->getNumDemux() - 1;
 		sprintf(dvrDev, "/dev/dvb/adapter0/dvr%d", dvrIndex);
@@ -2224,6 +2249,7 @@ void eDVBChannel::stop()
 	if (m_pvr_thread)
 	{
 		m_pvr_thread->stop();
+		delete m_pvr_thread;
 		m_pvr_thread = 0;
 	}
 	if (m_pvr_fd_dst >= 0)
