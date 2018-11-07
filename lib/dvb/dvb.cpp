@@ -2185,15 +2185,12 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
  	if (m_pvr_fd_dst < 0)
         }
 		/* (this codepath needs to be improved anyway.) */
-#ifdef HAVE_OLDPVR
 		m_pvr_fd_dst = open("/dev/misc/pvr", O_WRONLY);
 		if (m_pvr_fd_dst < 0)
 		{
 			eDebug("can't open /dev/misc/pvr - %m"); // or wait for the driver to be improved.
 			return -ENODEV;
 		}
-
- #if defined(__sh__) // our pvr device is called dvr
 		char dvrDev[128];
 		int dvrIndex = m_mgr->m_adapter.begin()->getNumDemux() - 1;
 		sprintf(dvrDev, "/dev/dvb/adapter0/dvr%d", dvrIndex);
