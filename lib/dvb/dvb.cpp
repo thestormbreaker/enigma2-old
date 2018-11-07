@@ -2122,6 +2122,7 @@ RESULT eDVBChannel::getDemux(ePtr<iDVBDemux> &demux, int cap)
 			return -1;
 
 		demux = *our_demux;
+	}	
 	else
 		demux = *our_demux;
 
