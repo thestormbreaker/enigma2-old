@@ -2174,7 +2174,7 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 	{
 		eDebug("[eDVBChannel] PVR source is not valid!");
 		return -ENOENT;
-	}
+}
 	{
 	m_source = source;
  	m_tstools.setSource(m_source, streaminfo_file);
