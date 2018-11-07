@@ -19,14 +19,6 @@ dist_pkgdata_DATA = \
 	hd-testcard.mvi \
 	distro-logo.png
 
-if HAVE_TEXTLCD
-if SPARK
-SUBDIRS += displaydualtext
-else
-SUBDIRS += displaytext
-endif
-endif
-
 if HAVE_COLORLCD3
 SUBDIRS += display128dm
 endif
