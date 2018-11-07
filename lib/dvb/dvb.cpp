@@ -107,7 +107,7 @@ eDVBResourceManager::eDVBResourceManager()
 		adapter->scanDevices();
 		addAdapter(adapter, true);
 	}
-
+        
 	m_boxtype = -1;
 	int fd = open("/proc/stb/info/model", O_RDONLY);
 	if (fd >= 0) {
@@ -132,7 +132,7 @@ eDVBResourceManager::eDVBResourceManager()
 		else
 			eDebug("[eDVBResourceManager] boxtype detection via /proc/stb/info not possible. Use fallback via demux count!");
 	}
-	{
+	else {
 		eDebug("[eDVBResourceManager] cannot open /proc/stb/info. Use fallback via demux count!");
 	}
 
@@ -352,6 +352,19 @@ eDVBUsbAdapter::eDVBUsbAdapter(int nr)
 		frontend = -1;
 		goto error;
 	}
+
+	struct dtv_properties props;
+	struct dtv_property prop[1];
+
+	prop[0].cmd = DTV_ENUM_DELSYS;
+	memset(prop[0].u.buffer.data, 0, sizeof(prop[0].u.buffer.data));
+	prop[0].u.buffer.len = 0;
+	props.num = 1;
+	props.props = prop;
+
+	if (ioctl(frontend, FE_GET_PROPERTY, &props) < 0)
+		eDebug("[eDVBUsbAdapter] FE_GET_PROPERTY DTV_ENUM_DELSYS failed %m");
+
 	::close(frontend);
 	frontend = -1;
 
@@ -451,6 +464,8 @@ eDVBUsbAdapter::eDVBUsbAdapter(int nr)
 	ioctl(vtunerFd, VTUNER_SET_NAME, name);
 	ioctl(vtunerFd, VTUNER_SET_TYPE, type);
 	ioctl(vtunerFd, VTUNER_SET_FE_INFO, &fe_info);
+	if (prop[0].u.buffer.len > 0)
+		ioctl(vtunerFd, VTUNER_SET_DELSYS, prop[0].u.buffer.data);
 	ioctl(vtunerFd, VTUNER_SET_HAS_OUTPUTS, "no");
 	ioctl(vtunerFd, VTUNER_SET_ADAPTER, nr);
 
@@ -2122,7 +2137,7 @@ RESULT eDVBChannel::getDemux(ePtr<iDVBDemux> &demux, int cap)
 			return -1;
 
 		demux = *our_demux;
-	}	
+	}
 	else
 		demux = *our_demux;
 
@@ -2166,7 +2181,6 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 	if (m_pvr_thread)
 	{
 		m_pvr_thread->stop();
-		delete m_pvr_thread;
 		m_pvr_thread = 0;
 	}
 
@@ -2174,28 +2188,13 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 	{
 		eDebug("[eDVBChannel] PVR source is not valid!");
 		return -ENOENT;
-}
-	{
-	m_source = source;
- 	m_tstools.setSource(m_source, streaminfo_file);
- 
-		/* DON'T EVEN THINK ABOUT FIXING THIS. FIX THE ATI SOURCES FIRST,
-		   THEN DO A REAL FIX HERE! */
+	}
 
- 	if (m_pvr_fd_dst < 0)
-        }
-		/* (this codepath needs to be improved anyway.) */
-		m_pvr_fd_dst = open("/dev/misc/pvr", O_WRONLY);
-		if (m_pvr_fd_dst < 0)
-		{
-			eDebug("can't open /dev/misc/pvr - %m"); // or wait for the driver to be improved.
-			return -ENODEV;
-		}
-		char dvrDev[128];
-		int dvrIndex = m_mgr->m_adapter.begin()->getNumDemux() - 1;
-		sprintf(dvrDev, "/dev/dvb/adapter0/dvr%d", dvrIndex);
-		m_pvr_fd_dst = open(dvrDev, O_WRONLY);
- 
+	m_source = source;
+	m_tstools.setSource(m_source, streaminfo_file);
+
+	if (m_pvr_fd_dst < 0)
+	{
 		ePtr<eDVBAllocatedDemux> &demux = m_demux ? m_demux : m_decoder_demux;
 		if (demux)
 		{
@@ -2213,7 +2212,8 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 		}
 	}
 
-        m_pvr_thread->enablePVRCommit(1);
+	m_pvr_thread = new eDVBChannelFilePush(m_source->getPacketSize());
+	m_pvr_thread->enablePVRCommit(1);
 	m_pvr_thread->setStreamMode(m_source->isStream());
 	m_pvr_thread->setScatterGather(this);
 
@@ -2233,7 +2233,6 @@ void eDVBChannel::stop()
 	if (m_pvr_thread)
 	{
 		m_pvr_thread->stop();
-		delete m_pvr_thread;
 		m_pvr_thread = 0;
 	}
 	if (m_pvr_fd_dst >= 0)
