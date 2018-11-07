@@ -1,6 +1,6 @@
 installdir = $(pkglibdir)/python/Plugins/SystemPlugins
 
-SUBDIRS = SoftwareManager NFIFlash PositionerSetup Satfinder \
+SUBDIRS = SoftwareManager OSDPositionSetup OSD3DSetup NFIFlash PositionerSetup Satfinder \
 	VideoTune Hotplug \
 	DefaultServicesScanner CommonInterfaceAssignment \
 	HdmiCEC VideoClippingSetup \
