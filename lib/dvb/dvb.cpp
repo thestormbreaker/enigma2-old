@@ -2175,7 +2175,7 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 		eDebug("[eDVBChannel] PVR source is not valid!");
 		return -ENOENT;
 	}
-
+	{
 	m_source = source;
  	m_tstools.setSource(m_source, streaminfo_file);
  
@@ -2183,7 +2183,7 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 		   THEN DO A REAL FIX HERE! */
 
  	if (m_pvr_fd_dst < 0)
-}
+        }
 		/* (this codepath needs to be improved anyway.) */
 #ifdef HAVE_OLDPVR
 		m_pvr_fd_dst = open("/dev/misc/pvr", O_WRONLY);
