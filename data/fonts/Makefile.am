@@ -21,26 +21,6 @@ if VUDUO2
 dist_install_DATA += analog.ttf MyriadPro-Regular.otf MyriadPro-Semibold.otf MyriadPro-SemiboldIt.otf
 endif
 
-if ET10000
-dist_install_DATA += analog.ttf MyriadPro-Regular.otf MyriadPro-Semibold.otf MyriadPro-SemiboldIt.otf
-endif
-
-if SKYLAKE
-dist_install_DATA += analog.ttf MyriadPro-Regular.otf MyriadPro-Semibold.otf MyriadPro-SemiboldIt.otf
-endif
-
-if INIHDP
-dist_install_DATA += analog.ttf MyriadPro-Regular.otf MyriadPro-Semibold.otf MyriadPro-SemiboldIt.otf
-endif
-
 if VUSOLO4K
 dist_install_DATA += analog.ttf MyriadPro-Regular.otf MyriadPro-Semibold.otf MyriadPro-SemiboldIt.otf
-endif
-
-if ET8500
-dist_install_DATA += verdana.ttf
-endif
-
-if ET8500S
-dist_install_DATA += verdana.ttf
 endif
