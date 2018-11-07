@@ -2192,13 +2192,13 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
 			eDebug("can't open /dev/misc/pvr - %m"); // or wait for the driver to be improved.
 			return -ENODEV;
 		}
-#else
+ #else
  #if defined(__sh__) // our pvr device is called dvr
 		char dvrDev[128];
 		int dvrIndex = m_mgr->m_adapter.begin()->getNumDemux() - 1;
 		sprintf(dvrDev, "/dev/dvb/adapter0/dvr%d", dvrIndex);
 		m_pvr_fd_dst = open(dvrDev, O_WRONLY);
-#else
+ #else
 		ePtr<eDVBAllocatedDemux> &demux = m_demux ? m_demux : m_decoder_demux;
 		if (demux)
 		{
