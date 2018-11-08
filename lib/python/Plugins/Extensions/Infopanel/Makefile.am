@@ -13,5 +13,5 @@ install_PYTHON = \
 	RestartNetwork.py \
 	ScriptRunner.py \
 	SoftcamPanel.py \
-	Softwarepanel.py \
+	SoftwarePanel.py \
 	SwapManager.py
