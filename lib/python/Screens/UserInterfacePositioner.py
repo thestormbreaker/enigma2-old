@@ -74,6 +74,10 @@ def InitOsdPosition():
 		SystemInfo["OsdMenu"] = True
 	else:
 		SystemInfo["OsdMenu"] = False
+		
+	if getBrandOEM() in ('fulan'):
+		SystemInfo["CanChangeOsdPosition"] = False
+		SystemInfo["CanChange3DOsd"] = False
 
 	if getBrandOEM() in ('dreambox'):
 		SystemInfo["CanChangeOsdPosition"] = True
