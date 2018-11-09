@@ -3,11 +3,15 @@ from Components.About import about
 from Tools.CList import CList
 from Tools.HardwareInfo import HardwareInfo
 from enigma import eAVSwitch, getDesktop
-from boxbranding import getBoxType, getBrandOEM
+from boxbranding import getBoxType, getMachineBuild, getBrandOEM
 from SystemInfo import SystemInfo
 import os
 
 config.av = ConfigSubsection()
+if getBrandOEM() in ('azbox'):
+	config.av.edid_override = ConfigYesNo(default = True)
+else:
+	config.av.edid_override = ConfigYesNo(default = False)
 
 class AVSwitch:
 	rates = { } # high-level, use selectable modes.
