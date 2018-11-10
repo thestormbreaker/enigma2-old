@@ -4,6 +4,7 @@ import time
 from Directories import resolveFilename, SCOPE_CONFIG
 
 PERCENTAGE_START = 0
+boxtype = getBoxType()
 PERCENTAGE_END = 100
 
 profile_start = time.time()
