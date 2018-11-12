@@ -3,11 +3,11 @@ from SystemInfo import SystemInfo
 from fcntl import ioctl
 import os
 import struct
-from boxbranding import getBrandOEM
+from boxbranding import getBrandOEM, getBoxType
 import platform
 
 from Tools.Directories import pathExists
-
+boxtype = getBoxType()
 
 # asm-generic/ioctl.h
 IOC_NRBITS = 8L
