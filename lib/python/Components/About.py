@@ -1,4 +1,4 @@
-from boxbranding import getImageVersion, getMachineBuild
+from boxbranding import getImageVersion, getBoxType, getMachineBuild
 from sys import modules
 import socket, fcntl, struct
 
