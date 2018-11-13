@@ -11,6 +11,8 @@ from Tools.Directories import resolveFilename, SCOPE_ACTIVE_SKIN
 from Tools.LoadPixmap import LoadPixmap
 from boxbranding import getBoxType, getMachineBrand, getMachineName
 
+boxtype = getBoxType()
+
 class InputDeviceSelection(Screen, HelpableScreen):
 	def __init__(self, session, menu_path=""):
 		Screen.__init__(self, session)
