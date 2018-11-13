@@ -10,7 +10,9 @@ from Components.Pixmap import MultiPixmap
 
 profile("LOAD:enigma")
 import enigma
-from boxbranding import getBrandOEM
+from boxbranding import getBoxType, getMachineBrand, getBrandOEM, getMachineBuild, getMachineName
+
+boxtype = getBoxType()
 
 profile("LOAD:InfoBarGenerics")
 from Screens.InfoBarGenerics import InfoBarShowHide, \
