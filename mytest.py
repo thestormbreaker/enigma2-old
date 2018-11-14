@@ -62,6 +62,7 @@ from Components.config import config, configfile, ConfigText, ConfigYesNo, Confi
 InitFallbackFiles()
 
 profile("config.misc")
+config.misc.boxtype = ConfigText(default = boxtype)
 config.misc.blackradiopic = ConfigText(default = resolveFilename(SCOPE_ACTIVE_SKIN, "black.mvi"))
 radiopic = resolveFilename(SCOPE_ACTIVE_SKIN, "radio.mvi")
 if os.path.exists(resolveFilename(SCOPE_CONFIG, "radio.mvi")):
@@ -477,6 +478,21 @@ from Components.VolumeControl import VolumeControl
 
 from time import time, localtime, strftime
 from Tools.StbHardware import setFPWakeuptime, setRTCtime
+
+def autorestoreLoop():
+	# Check if auto restore settings fails, just start the wizard (avoid a endless loop) 
+	count = 0
+	if os.path.exists("/media/hdd/images/config/autorestore"):
+		f = open("/media/hdd/images/config/autorestore", "r")
+		count = int(f.read())
+		f.close()
+		if count >= 3:
+			return False
+	count += 1
+	f = open("/media/hdd/images/config/autorestore", "w")
+	f.write(str(count))
+	f.close()
+	return True		
 
 def runScreenTest():
 	config.misc.startCounter.value += 1
