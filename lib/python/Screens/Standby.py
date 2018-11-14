@@ -8,7 +8,7 @@ from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
 from GlobalActions import globalActionMap
 from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference
-from boxbranding import getMachineBrand, getMachineName, getBoxType
+from boxbranding import getMachineBrand, getMachineName, getBoxType, getBrandOEM
 from Tools import Notifications
 from time import localtime, time
 import Screens.InfoBar
