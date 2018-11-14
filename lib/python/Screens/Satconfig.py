@@ -17,7 +17,7 @@ from Screens.AutoDiseqc import AutoDiseqc
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileExists
 
-from boxbranding import getImageType
+from boxbranding import getBoxType, getImageType
 from time import mktime, localtime, time
 from datetime import datetime
 
