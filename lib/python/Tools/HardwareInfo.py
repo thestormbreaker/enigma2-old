@@ -1,3 +1,7 @@
+from fcntl import ioctl
+from struct import pack, unpack
+from os import path
+from Components.config import config
 from boxbranding import getBoxType, getBrandOEM, getMachineName
 from Components.About import about
 
