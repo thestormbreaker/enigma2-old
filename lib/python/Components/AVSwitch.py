@@ -98,7 +98,9 @@ class AVSwitch:
 
 	modes["YPbPr"] = modes["HDMI"]
 	if getBoxType() in ('dm500hd', 'dm800', 'vuuno', 'vusolo', 'vusolo2', 'vuultimo', 'vuduo', 'vuduo2'):
-                modes["Scart-YPbPr"] = modes["HDMI"]
+		
+		if SystemInfo["Scart-YPbPr"]:
+		modes["Scart-YPbPr"] = modes["HDMI"]
 
 	# if "DVI-PC" in modes and not getModeList("DVI-PC"):
 	# 	print "[VideoHardware] remove DVI-PC because of not existing modes"
